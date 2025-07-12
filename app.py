@@ -53,29 +53,35 @@ def process_video():
                 if chunk:
                     f.write(chunk)
         
-        # پردازش ویدیو و افزودن متن با فونت Shabnam
-        video = VideoFileClip(input_path)
-        
-        # ایجاد متن با فونت Shabnam
-        txt_clip = TextClip(
-            text,
-            fontsize=30,
-            font=FONT_PATH,
-            color='white',
-            stroke_color='black',
-            stroke_width=1.5,
-            size=(video.size[0], None)  # عرض متن برابر عرض ویدیو
-        ).set_position(('center', 'bottom')).set_duration(video.duration)
-        
-        final = CompositeVideoClip([video, txt_clip])
-        final.write_videofile(
-            output_path,
-            codec='libx264',
-            audio_codec='aac',
-            threads=4,
-            fps=video.fps,
-            preset='ultrafast'
-        )
+    try:
+    # پردازش ویدیو و افزودن متن با فونت Shabnam
+    video = VideoFileClip(input_path)
+    
+    # ایجاد متن با تنظیمات بهینه شده
+    txt_clip = (TextClip(
+        txt=text,
+        font=FONT_PATH,
+        fontsize=30,
+        color='white',
+        stroke_color='black',
+        stroke_width=1,
+        size=(video.w * 0.9, None),  # 90% عرض ویدیو
+        method='caption',
+        align='center',
+        print_cmd=False
+    )
+    .set_position(('center', 'bottom-20'))  # 20 پیکسل از پایین فاصله
+    .set_duration(video.duration))
+    
+    final = CompositeVideoClip([video, txt_clip])
+    final.write_videofile(
+        output_path,
+        codec='libx264',
+        audio_codec='aac',
+        threads=4,
+        preset='ultrafast',
+        ffmpeg_params=['-crf', '28']  # کیفیت متعادل
+    )
         
         # حذف فایل موقت ورودی
         os.remove(input_path)
