@@ -1,11 +1,11 @@
+from flask import Flask, request, jsonify
 import os
 import uuid
 import requests
 from moviepy.editor import TextClip, VideoFileClip, CompositeVideoClip
 from datetime import datetime, timedelta
 import threading
-import imageio
-imageio.plugins.ffmpeg.download()  # Ensure FFmpeg is available
+import shutil
 
 app = Flask(__name__)
 TEMP_DIR = "temp"
