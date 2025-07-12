@@ -2,6 +2,6 @@ services:
   - type: web
     name: videotextadder
     runtime: python
-    pythonVersion: "3.9.16"
     buildCommand: pip install -r requirements.txt
     startCommand: python app.py
+    env: python
