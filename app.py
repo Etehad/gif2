@@ -8,7 +8,7 @@ import threading
 
 app = Flask(__name__)
 TEMP_DIR = "temp"
-FONT_PATH = "fonts/Shabnam.ttf"
+FONT_PATH = "Shabnam.ttf"
 os.makedirs(TEMP_DIR, exist_ok=True)
 os.makedirs("fonts", exist_ok=True)
 
