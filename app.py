@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 import os
 import uuid
 import requests
-from moviepy.editor import TextClip, VideoFileClip, CompositeVideoClip
+from moviepy import TextClip, VideoFileClip, CompositeVideoClip
 from datetime import datetime, timedelta
 import threading
 import shutil
