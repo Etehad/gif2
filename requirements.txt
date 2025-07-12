@@ -2,3 +2,5 @@ Flask
 requests
 moviepy
 numpy
+imageio
+imageio-ffmpeg
