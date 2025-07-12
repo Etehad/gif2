@@ -5,11 +5,12 @@ import requests
 from moviepy import TextClip, VideoFileClip, CompositeVideoClip
 from datetime import datetime, timedelta
 import threading
-import shutil
 
 app = Flask(__name__)
 TEMP_DIR = "temp"
+FONT_PATH = "fonts/Shabnam.ttf"
 os.makedirs(TEMP_DIR, exist_ok=True)
+os.makedirs("fonts", exist_ok=True)
 
 def delete_file_after(file_path, delay_minutes=1):
     def delete_file():
@@ -52,12 +53,16 @@ def process_video():
                 if chunk:
                     f.write(chunk)
         
-        # پردازش ویدیو و افزودن متن
+        # پردازش ویدیو و افزودن متن با فونت Shabnam
         video = VideoFileClip(input_path)
-        txt_clip = TextClip(text, fontsize=24, color='white', bg_color='black')
-        txt_clip = txt_clip.set_position(('center', 'bottom')).set_duration(video.duration)
+        
+        txt_clip = (TextClip(text, fontsize=30, font=FONT_PATH, color='white',
+                    stroke_color='black', stroke_width=1.5)
+                   .set_position(('center', 'bottom'))
+                   .set_duration(video.duration))
+        
         final = CompositeVideoClip([video, txt_clip])
-        final.write_videofile(output_path, codec='libx264', audio_codec='aac')
+        final.write_videofile(output_path, codec='libx264', audio_codec='aac', threads=4)
         
         # حذف فایل موقت ورودی
         os.remove(input_path)
