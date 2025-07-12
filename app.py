@@ -56,13 +56,26 @@ def process_video():
         # پردازش ویدیو و افزودن متن با فونت Shabnam
         video = VideoFileClip(input_path)
         
-        txt_clip = (TextClip(text, fontsize=30, font=FONT_PATH, color='white',
-                    stroke_color='black', stroke_width=1.5)
-                   .set_position(('center', 'bottom'))
-                   .set_duration(video.duration))
+        # ایجاد متن با فونت Shabnam
+        txt_clip = TextClip(
+            text,
+            fontsize=30,
+            font=FONT_PATH,
+            color='white',
+            stroke_color='black',
+            stroke_width=1.5,
+            size=(video.size[0], None)  # عرض متن برابر عرض ویدیو
+        ).set_position(('center', 'bottom')).set_duration(video.duration)
         
         final = CompositeVideoClip([video, txt_clip])
-        final.write_videofile(output_path, codec='libx264', audio_codec='aac', threads=4)
+        final.write_videofile(
+            output_path,
+            codec='libx264',
+            audio_codec='aac',
+            threads=4,
+            fps=video.fps,
+            preset='ultrafast'
+        )
         
         # حذف فایل موقت ورودی
         os.remove(input_path)
